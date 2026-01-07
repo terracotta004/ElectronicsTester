@@ -1,0 +1,52 @@
+﻿@model ElectronicsTester.Models.I2cStatusViewModel
+@{
+    ViewData["Title"] = "I2C Status";
+}
+
+<div class="text-center">
+    <h1 class="display-4">I2C Status</h1>
+    <p>Live read from the configured I2C device.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Configuration</h5>
+                <dl class="row mb-4">
+                    <dt class="col-sm-4">Bus ID</dt>
+                    <dd class="col-sm-8">@Model.BusId</dd>
+                    <dt class="col-sm-4">Device Address</dt>
+                    <dd class="col-sm-8">0x<span>@Model.DeviceAddress.ToString("X2")</span></dd>
+                    <dt class="col-sm-4">Read Length</dt>
+                    <dd class="col-sm-8">@Model.ReadLength bytes</dd>
+                    <dt class="col-sm-4">Register Address</dt>
+                    <dd class="col-sm-8">
+                        @(Model.RegisterAddress.HasValue ? $"0x{Model.RegisterAddress.Value:X2}" : "None")
+                    </dd>
+                </dl>
+
+                <h5 class="card-title">Latest Reading</h5>
+                @if (!string.IsNullOrWhiteSpace(Model.Error))
+                {
+                    <div class="alert alert-danger mb-0" role="alert">
+                        @Model.Error
+                    </div>
+                }
+                else
+                {
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Timestamp (UTC)</dt>
+                        <dd class="col-sm-8">@Model.Timestamp.ToString("u")</dd>
+                        <dt class="col-sm-4">Bytes Read</dt>
+                        <dd class="col-sm-8">@Model.BytesRead</dd>
+                        <dt class="col-sm-4">Data (Hex)</dt>
+                        <dd class="col-sm-8">
+                            <code>@(Model.DataHex ?? "No data")</code>
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+</div>
